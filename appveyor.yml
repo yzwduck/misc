@@ -1,6 +1,15 @@
-image: Visual Studio 2015
+image: ubuntu
 
 clone_depth: 5
 
+build: off
+
+build_script:
+- make
+
+environment:
+  APPVEYOR_SSH_KEY: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJYPkxKhVBHk/0vKStIbHlPQaHOj1tmtpSvUYx41fzhEpM7YXx3gQJe03J1H0o0l5rxYIJnZhAezcD/SAP9WVMQu8g/PLvlLcuWXUiksdkvnZg9HNEz51LAqFVthzcgyunWHTdAPE7Da1waPrUxyyLidYTOxoF/5W8CZyUT27HvgqzR7iXaLYCeK4N53Xp6AiDxCl1uWplqWYX3U5FR3LI9XEmYhzOkA5sYpj7M2xpiAjSqjfHdbL8F/FbwC+TyCln7496+PjXSvZ6vN99LUoiAioQ8XlsLyvmlgRbURUrc1o7Ad6FWp6Ct7Tgzsx3DYZKEsqKTizLz6WA2W1dUrPr
+
 on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+- sh: export APPVEYOR_SSH_BLOCK=true
+- sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
