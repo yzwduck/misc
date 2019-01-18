@@ -2,15 +2,20 @@ image: Visual Studio 2017
 
 clone_depth: 5
 
+environment:
+  artifactName: $(APPVEYOR_PROJECT_NAME)-$(APPVEYOR_REPO_TAG_NAME)-$(APPVEYOR_REPO_COMMIT)
+
 build_script:
 - msbuild /p:Platform=x86 /p:Configuration=Debug
 - msbuild /p:Platform=x86 /p:Configuration=Release
 - msbuild /p:Platform=x64 /p:Configuration=Debug
 - msbuild /p:Platform=x64 /p:Configuration=Release
 
+after_build:
+- 7z a %artifactName%.zip *.exe -R -ir!*.pdb -xr!vc*.pdb
+
 artifacts:
-  - path: '**\*.exe'
-  - path: '**\*.pdb'
+  - path: '*.zip'
 
 # on_finish:
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
